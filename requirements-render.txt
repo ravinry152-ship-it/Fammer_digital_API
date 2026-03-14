@@ -4,14 +4,13 @@ djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
 python-decouple==3.8
 python-dotenv==1.2.2
-groq==0.37.1
-langchain==1.2.10
-langchain-groq==1.1.2
-langchain-community==0.4.1
-langchain-core==1.2.17
-langchain-text-splitters==1.1.1
-langchain-huggingface==0.1.2
-langchain-chroma==0.1.4
+groq
+langchain
+langchain-groq
+langchain-community
+langchain-core
+langchain-text-splitters
+langchain-chroma
 PyMuPDF==1.27.1
 psycopg2-binary==2.9.9
 requests==2.32.5
@@ -19,3 +18,5 @@ gunicorn==21.2.0
 whitenoise==6.7.0
 asgiref==3.11.0
 Pillow==10.4.0
+chromadb
+huggingface-hub

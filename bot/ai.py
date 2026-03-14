@@ -5,7 +5,7 @@ import fitz
 from dotenv import load_dotenv
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEndpointEmbeddings
+from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 from langchain_chroma import Chroma
 from langchain_groq import ChatGroq
 from langchain_core.output_parsers import StrOutputParser
@@ -29,9 +29,9 @@ PDF_FOLDER  = os.path.join(BASE_DIR, "pdfs")
 DB_PATH     = os.path.join(BASE_DIR, "chroma_db")
 
 # ====== ២. Embeddings & Database ======
-embeddings = HuggingFaceEndpointEmbeddings(
-    model="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-    huggingfacehub_api_token=os.getenv("HUGGINGFACE_API_KEY")
+embeddings = HuggingFaceInferenceAPIEmbeddings(
+    api_key=os.getenv("HUGGINGFACE_API_KEY"),
+    model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 )
 if os.path.exists(DB_PATH):
     logger.info("កំពុងដំណើរការ Database ដែលមានស្រាប់...")
