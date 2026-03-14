@@ -14,5 +14,4 @@ urlpatterns = [
     path("histrory/<int:pk>/", views.LearningHistrory.as_view()),
     path('ricevarietie/', views.Ricevarietie.as_view()),
     path('ricevarietiedetail/<int:pk>/', views.RicevarietieDetail.as_view()),
-    path('predict_yield/', views.predict_yield, name= 'predict_yield')
 ]
