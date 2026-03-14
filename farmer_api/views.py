@@ -7,13 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate , login
 from  . models import SaleProduct , Learning , RicePrice , RiceVarieties
 from . serializers import SaleProductSerializer, LearningSerializer ,RicePriceSerializer ,RiceVarietiesSerializer
-import joblib
-import pandas as pd
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
-import os
-from django.conf import settings
+#from django.conf import settings
 #==================================Register_API==============================
 class Register(APIView) :
     permission_classes = [AllowAny,] 
@@ -253,45 +247,45 @@ class RicevarietieDetail(APIView) :
 #================================================ML==============================================
 # ១. Load Model ទុកជាមុន (Global variable) ដើម្បីឱ្យលឿន
 # ចំណាំ៖ ត្រូវឆែកមើល Path របស់ File ឱ្យត្រឹមត្រូវ
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'farmer_api', 'rice_model.pkl')
+# MODEL_PATH = os.path.join(settings.BASE_DIR, 'farmer_api', 'rice_model.pkl')
 
-# ២. Load Model
-try:
-    model = joblib.load(MODEL_PATH) # ប្រើឈ្មោះឱ្យដូចខាងលើ
-    print("AI Model ត្រូវបាន Load ជោគជ័យ!")
-except Exception as e:
-    model = None
-    print(f"ការព្រមាន: មិនអាច Load Model បានទេ ដោយសារ {e}")
+# # ២. Load Model
+# try:
+#     model = joblib.load(MODEL_PATH) # ប្រើឈ្មោះឱ្យដូចខាងលើ
+#     print("AI Model ត្រូវបាន Load ជោគជ័យ!")
+# except Exception as e:
+#     model = None
+#     print(f"ការព្រមាន: មិនអាច Load Model បានទេ ដោយសារ {e}")
 
-@csrf_exempt
-def predict_yield(request):
-    if request.method == 'POST':
-        if model is None:
-            return JsonResponse({'status': 'error', 'message': 'Model មិនទាន់បានដំឡើងក្នុង Server ទេ'})
+# @csrf_exempt
+# def predict_yield(request):
+#     if request.method == 'POST':
+#         if model is None:
+#             return JsonResponse({'status': 'error', 'message': 'Model មិនទាន់បានដំឡើងក្នុង Server ទេ'})
             
-        try:
-            # ទទួលទិន្នន័យពី Flutter
-            data = json.loads(request.body)
-            area = float(data.get('area', 0))
+#         try:
+#             # ទទួលទិន្នន័យពី Flutter
+#             data = json.loads(request.body)
+#             area = float(data.get('area', 0))
 
-            # បង្កើត DataFrame ឱ្យត្រូវតាម Format (Column: 'Area')
-            input_df = pd.DataFrame([[area]], columns=['Area'])
+#             # បង្កើត DataFrame ឱ្យត្រូវតាម Format (Column: 'Area')
+#             input_df = pd.DataFrame([[area]], columns=['Area'])
 
-            # ឱ្យ AI ទាយ
-            prediction = model.predict(input_df)
-            result = prediction[0]
+#             # ឱ្យ AI ទាយ
+#             prediction = model.predict(input_df)
+#             result = prediction[0]
 
-            return JsonResponse({
-                'status': 'success',
-                'area': area,
-                'predicted_production_tons': round(result, 2),
-                'message': 'AI បានទាយរួចរាល់'
-            })
+#             return JsonResponse({
+#                 'status': 'success',
+#                 'area': area,
+#                 'predicted_production_tons': round(result, 2),
+#                 'message': 'AI បានទាយរួចរាល់'
+#             })
             
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': f'កំហុសបច្ចេកទេស: {str(e)}'})
+#         except Exception as e:
+#             return JsonResponse({'status': 'error', 'message': f'កំហុសបច្ចេកទេស: {str(e)}'})
 
-    return JsonResponse({'status': 'error', 'message': 'សូមប្រើវិធី POST'})
+#     return JsonResponse({'status': 'error', 'message': 'សូមប្រើវិធី POST'})
 
    
 
