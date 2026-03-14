@@ -1,0 +1,23 @@
+# Secrets
+.env
+*.env
+
+# Database
+db.sqlite3
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Media files
+media/
+
+# IDE
+.vscode/
+.idea/
