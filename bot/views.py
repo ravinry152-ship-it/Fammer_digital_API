@@ -1,14 +1,13 @@
 
 import json
+import traceback
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .ai import ask 
+from asgiref.sync import async_to_sync
+from .ai import ask
+
 @csrf_exempt
-#ដោយសា វាជា​API ពីរក្រៅហេីយយេីង អត់ប្រេី serializer  ទេីបប្រេី 
-# import json: ប្រើសម្រាប់បំប្លែងទិន្នន័យពី JSON string ទៅជា Python dictionary។  
-# async def  បានន័យថា​funtionនេះអាចធ្វើការងារច្រើនក្នុងពេលតែមួយដោយមិនចាំបាច់រង់ចាំគ្នា
-# Serializer បំប្លែង JSON String ទៅជា Python Dictionary ព្រោះpython(Django)វាអត់ស្គល់jsonទេ
-async def chat(request):  
+def chat(request):
     if request.method != "POST":
         return JsonResponse({"success": False, "error": "POST only"}, status=405)
     try:
@@ -21,10 +20,12 @@ async def chat(request):
                 "error": "សំណួរទទេ!"
             }, status=400)
 
-        result = await ask(question)  
+        # ✅ run async function ក្នុង sync view
+        result = async_to_sync(ask)(question)
         return JsonResponse(result)
 
     except Exception as e:
+        traceback.print_exc()  # បង្ហាញ error ពេញក្នុង Logs
         return JsonResponse({
             "success": False,
             "error": str(e)
@@ -32,7 +33,7 @@ async def chat(request):
 
 
 @csrf_exempt
-async def health(request): 
+def health(request):
     if request.method != "GET":
         return JsonResponse({"error": "GET only"}, status=405)
     return JsonResponse({
