@@ -20,7 +20,7 @@ huggingface_hub==0.23.0
 psycopg==3.3.2
 psycopg-binary==3.3.2
 pandas==3.0.1
-numpy==2.4.2
+numpy>=1.24.0,<2.0.0
 scikit-learn==1.8.0
 joblib==1.5.3
 requests==2.32.5
@@ -28,3 +28,4 @@ gunicorn==21.2.0
 whitenoise==6.7.0
 asgiref==3.11.0
 fastembed==0.3.6
+sentence-transformers>=2.2.2
